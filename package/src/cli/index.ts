@@ -199,8 +199,12 @@ async function ensureCoreDependencies(
 	const platformName =
 		platformOS === "macos" ? "darwin" : platformOS === "win" ? "win" : "linux";
 	const archName = platformArch;
-	const coreTarballUrl = `https://github.com/blackboardsh/electrobun/releases/download/${version}/electrobun-core-${platformName}-${archName}.tar.gz`;
 
+	// Check if we use latest, if yes, form a bit different url	
+	const isLatest = version === 'latest';
+	const releasePath = isLatest ? 'latest/download' : `download/${version}`;
+	const coreTarballUrl = `https://github.com/blackboardsh/electrobun/releases/${releasePath}/electrobun-core-${platformName}-${archName}.tar.gz`;
+	
 	console.log(`Downloading core binaries from: ${coreTarballUrl}`);
 
 	try {
@@ -467,7 +471,13 @@ async function downloadCustomBun(
 		`${platformOS}-${platformArch}`,
 	);
 	const overrideBinary = join(overrideDir, `bun${binExt}`);
-	const bunUrl = `https://github.com/oven-sh/bun/releases/download/bun-v${bunVersion}/${bunUrlSegment}`;
+
+	// Check if we use latest, if yes, form a bit different url
+	const isLatest = bunVersion === 'latest';
+	const releaseSegment = isLatest 
+  		? 'latest/download' 
+  		: `download/bun-v${bunVersion}`;
+	const bunUrl = `https://github.com/oven-sh/bun/releases/${releaseSegment}/${bunUrlSegment}`;
 
 	console.log(`Using custom Bun version: ${bunVersion}`);
 	console.log(`Downloading from: ${bunUrl}`);
@@ -653,8 +663,13 @@ async function ensureCEFDependencies(
 	const platformName =
 		platformOS === "macos" ? "darwin" : platformOS === "win" ? "win" : "linux";
 	const archName = platformArch;
-	const cefTarballUrl = `https://github.com/blackboardsh/electrobun/releases/download/${version}/electrobun-cef-${platformName}-${archName}.tar.gz`;
 
+	// Check if we use latest, if yes, form a bit different url
+	const releasePath = version === 'latest' 
+  		? 'latest/download' 
+  		: `download/${version}`;
+	const cefTarballUrl = `https://github.com/blackboardsh/electrobun/releases/${releasePath}/electrobun-cef-${platformName}-${archName}.tar.gz`;
+	
 	// Helper function to download with retry logic
 	async function downloadWithRetry(
 		url: string,

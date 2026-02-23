@@ -86,7 +86,9 @@ async function ensureCliBinary() {
   const version = packageJson.version;
   const tag = `v${version}`;
 
-  const tarballUrl = `https://github.com/blackboardsh/electrobun/releases/download/${tag}/electrobun-cli-${platform}-${arch}.tar.gz`;
+  // Check if we use latest, if yes, form a bit different url
+  const versionSegment = tag === 'latest' ? 'latest/download' : `download/${tag}`;
+  const tarballUrl = `https://github.com/blackboardsh/electrobun/releases/${versionSegment}/electrobun-cli-${platform}-${arch}.tar.gz`;
   const tarballPath = join(cacheDir, `electrobun-${platform}-${arch}.tar.gz`);
 
   try {
